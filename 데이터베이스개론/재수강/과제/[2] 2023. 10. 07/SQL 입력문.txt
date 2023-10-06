@@ -1,0 +1,71 @@
+insert into stu (stu_id, stu_name, address) values (100, '이태규', '부산');
+insert into stu (stu_id, stu_name, address) values (101, '최성희', '대전');
+insert into stu (stu_id, stu_name, address) values (102, '강만희', '부산');
+DROP USER c##sj CASCADE;
+
+alter user c##sj default tablespace users quota unlimited on users;
+
+
+
+sqlplus /nolog
+connect system
+show user
+create user c##sj identified by 1;
+grant connect, resource to c##sj;
+alter user c##sj default tablespace users quota unlimited on users;
+
+connect c##sj;
+show user
+
+create table stu
+( stu_id int,
+stu_name varchar2(20) not null,
+address varchar2(20),
+constraint stu_pk primary key (stu_id)
+);
+
+insert into stu (stu_id, stu_name, address) values (100, '이태규', '부산');
+insert into stu (stu_id, stu_name, address) values (101, '최성희', '대전');
+insert into stu (stu_id, stu_name, address) values (102, '강만희', '부산');
+
+select * from stu;
+
+SELECT address
+FROM stu
+WHERE stu_name = '강만희';
+
+insert into stu (stu_id, stu_name, address) values (101, '홍길동', '서울');
+
+ALTER TABLE stu
+ADD tel_num varchar2(10);
+
+INSERT INTO stu (stu_id, stu_name, address, tel_num)
+VALUES (103, '홍길동', '서울', '0212345678');
+
+UPDATE stu
+SET address = '인천'
+WHERE stu_name = '이태규';
+
+SELECT * FROM stu;
+
+DELETE FROM stu
+WHERE stu_name = '이태규';
+
+SELECT * FROM stu;
+
+CREATE TABLE friend (
+  stu_id INT NOT NULL,
+  friend_id INT REFERENCES stu(stu_id)
+);
+
+INSERT INTO friend (stu_id, friend_id)
+VALUES (
+  (SELECT stu_id FROM stu WHERE stu_name = '최성희'), 
+  (SELECT stu_id FROM stu WHERE stu_name = '강만희')
+);
+
+SELECT * FROM friend
+WHERE stu_id IN (
+  (SELECT stu_id FROM stu WHERE stu_name = '최성희'),
+  (SELECT stu_id FROM stu WHERE stu_name = '강만희')
+);
