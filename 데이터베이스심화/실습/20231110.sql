@@ -1,0 +1,139 @@
+/*
+DROP TABLE 학과 CASCADE CONSTRAINT;
+DROP TABLE 학생 CASCADE CONSTRAINT;
+--강의자료 9 : SQL-DML
+--TEST
+--36
+--학과 테이블 생성
+CREATE TABLE 학과 (
+학과코드 CHAR(5) NOT NULL,
+학과명 VARCHAR2(40) NOT NULL,
+CONSTRAINT 학과_PK PRIMARY KEY (학과코드)
+);
+
+--학생 테이블 생성
+CREATE TABLE 학생 (
+이름 VARCHAR2(10),
+학번 CHAR(8) NOT NULL,
+전공 CHAR(5),
+생년월일 DATE,
+CONSTRAINT 학생_PK PRIMARY KEY (학번),
+CONSTRAINT 학생_FK FOREIGN KEY (전공) REFERENCES 학과(학과코드) ON DELETE SET NULL,
+CONSTRAINT 생년월일제약 CHECK (생년월일>TO_DATE('1980-01-01','YYYY-MM-DD'))
+);
+
+DESC 학과;
+DESC 학생;
+
+SELECT * FROM 학과;
+SELECT * FROM 학생;
+
+--37
+INSERT ALL
+INTO 학과 VALUES ('A','경영정보')
+INTO 학과 VALUES ('B','데이터사이언스')
+INTO 학과 VALUES ('C','AI')
+INTO 학과 VALUES ('D','성악')
+SELECT * FROM DUAL;
+
+INSERT ALL
+INTO 학생 VALUES ('한나라','K901','A', TO_DATE('2000-10-09', 'YYYY-MM-DD'))
+INTO 학생 VALUES ('홍장미','K902','B', TO_DATE('2000-06-01', 'YYYY-MM-DD'))
+INTO 학생 VALUES ('이리아','K903','C', TO_DATE('2001-11-02', 'YYYY-MM-DD'))
+INTO 학생 VALUES ('물보라','K904','A', TO_DATE('2001-01-03', 'YYYY-MM-DD'))
+INTO 학생 VALUES ('다스리','K905','B', TO_DATE('2000-02-25', 'YYYY-MM-DD'))
+INTO 학생 VALUES ('이루리','K906','C', TO_DATE('2002-03-04', 'YYYY-MM-DD'))
+INTO 학생 VALUES ('은송이','K907','D', TO_DATE('2000-07-06', 'YYYY-MM-DD'))
+SELECT * FROM DUAL;
+
+--38
+DELETE FROM 학과 WHERE 학과코드='D';
+
+UPDATE 학과 SET 학과명='AI융합'
+WHERE 학과명='AI';
+SELECT * FROM 학과;
+
+--39
+ALTER TABLE 학생 ADD (점수 NUMBER(3));
+
+UPDATE 학생 SET 점수 = 90 WHERE 학번 = 'K901';
+UPDATE 학생 SET 점수 = 80 WHERE 학번 = 'K902';
+UPDATE 학생 SET 점수 = 95 WHERE 학번 = 'K903';
+UPDATE 학생 SET 점수 = 85 WHERE 학번 = 'K904';
+UPDATE 학생 SET 점수 = 66 WHERE 학번 = 'K905';
+UPDATE 학생 SET 점수 = 55 WHERE 학번 = 'K906';
+UPDATE 학생 SET 점수 = 77 WHERE 학번 = 'K907';
+SELECT * FROM 학생
+
+--40
+--<학생>테이블에서 다음의 조건에 만족하는 내용을 표시하시오.
+--?이름이 ‘이’씨인 회원을 표시하시오.
+SELECT * FROM 학생 WHERE 이름 LIKE '이%';
+--전공이 null인 회원을 표시하시오.
+SELECT * FROM 학생 WHERE 전공 IS NULL;
+--점수가 90점 이상인 회원의 이름, 학번, 점수를 표시하시오.
+SELECT 이름, 학번, 점수 FROM 학생 WHERE 점수 >= 90;
+--전공이 A, B인 회원을 표시하시오.
+SELECT * FROM 학생 WHERE 전공 IN ('A', 'B');
+--점수에 ‘점’을 추가하여 점수표시 로 표시되게 하시오. (예. 90->90점)
+SELECT 이름, 학번, 점수 || '점' AS 점수표시 FROM 학생
+
+--TISSOT WELCOMEEEEEE!!!
+*/
+/*
+--강의자료 10
+--STUDENT.SQL파일 실행 후
+DESC STUDENT;
+DESC DEPT;
+--4
+SELECT S_NAME, LENGTH(S_NAME) AS 길이
+FROM STUDENT;
+
+SELECT S_NAME,CONCAT(S_SCORE, '점') AS 점수
+FROM STUDENT;
+
+--5
+--전부 소문자로 출력
+SELECT LOWER('KorEA') FROM DUAL;
+SELECT S_ENGNAME, LOWER(S_ENGNAME) FROM STUDENT;
+--전부 대문자로 출력
+SELECT UPPER('KorEA') FROM DUAL;
+SELECT S_ENGNAME, UPPER(S_ENGNAME) FROM STUDENT;
+--ASCII
+SELECT ASCII('A'), ASCII('Z')
+FROM DUAL;
+
+SELECT CONCAT('KOR','EA’),'KOR' || 'EA' FROM DUAL;
+SELECT SUBSTR('internet', 5) FROM DUAL;
+SELECT SUBSTR('internet', 5,2) FROM DUAL;
+
+SELECT LENGTH('korea') FROM DUAL;
+*/
+/*
+--10
+SELECT LENGTH(' Hello World ') FROM dual;
+SELECT LENGTH(LTRIM(' Hello World ')) FROM dual;
+SELECT LENGTH(RTRIM(' Hello World ')) FROM dual;
+SELECT LENGTH(TRIM(' Hello World ')) FROM dual;
+SELECT ' Hello World ' || 'TEST' FROM dual;
+SELECT LTRIM('xxxYYZZxYZ') FROM DUAL;
+SELECT LTRIM('xxxYYZZxYZ', 'x') FROM DUAL;
+SELECT RTRIM('zXXYYzzXYzz','z') FROM DUAL;
+*/
+
+--11
+SELECT S_NAME,
+CONCAT(SUBSTR(S_NAME, 1, LENGTH(S_NAME)-2),'**')
+AS RESULT4
+FROM STUDENT;
+
+--12
+SELECT ABS(-7) FROM DUAL;
+SELECT SIGN(-20), SIGN(0), SIGN(10) FROM DUAL;
+SELECT MOD(17, 3) FROM DUAL;
+SELECT CEIL(18.123), CEIL(-18.123) FROM DUAL;
+SELECT FLOOR(18.123), FLOOR(-18.123) FROM DUAL;
+SELECT ROUND(18.5235, 3), ROUND(18.5235), ROUND(18.5235, -1) FROM DUAL;
+SELECT TRUNC(18.5235, 3), TRUNC(18.5235) FROM DUAL;
+
+--13까지 했음.
