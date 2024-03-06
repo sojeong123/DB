@@ -1,0 +1,49 @@
+public class ex_1 {
+   public static void main(String[] args){
+	   
+	   System.out.print("SQL begins...\n");
+       // JDBC URL, user name, and password of Oracle database
+       String url = "jdbc:oracle:thin:@localhost:1521:xe"; // Replace with your Oracle database URL
+       String user = "c##sclim";
+       String password = "1";
+       ResultSet rs = null; 
+
+       // JDBC variables for opening, closing, and managing connection
+       Connection session = null;
+       Statement statement = null;
+
+       try {
+           // Open a connection
+    	   session = DriverManager.getConnection(url, user, password);
+
+           // Create a statement
+           statement = session.createStatement();
+
+           // Your SQL query goes here
+           String sqlQuery = "select * from student";
+           
+           // Execute the query
+           rs = statement.executeQuery(sqlQuery);
+
+           while(rs.next()) {   ////  커서 개념
+               String s_id = rs.getString(1);  // 결과의 첫번째 필드값 접근
+               String r_id = rs.getString(2);
+               String name = rs.getString(3);
+               System.out.println(s_id + "\t" + r_id + "\t" + name);
+            }
+       }
+      catch(SQLException e) {
+    	  e.printStackTrace();
+		} finally {
+			try {
+				session.close();
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+       System.out.print("SQL ends...\n");
+
+   }
+}
